@@ -1,0 +1,52 @@
+#define LED_PIN 8
+#define BUZZER_PIN 7
+
+int distance;
+int threshold = 30;
+bool smsSent = false;
+
+void setup()
+{
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+  Serial.begin(9600);
+
+  Serial.println("Smart Garbage Monitoring System Started");
+}
+
+void loop()
+{
+  distance = 50;   // SIMULATED distance value
+
+  Serial.print("Garbage Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  if (distance <= threshold)
+  {
+    digitalWrite(LED_PIN, HIGH);
+
+    digitalWrite(BUZZER_PIN, HIGH);
+    delay(300);
+    digitalWrite(BUZZER_PIN, LOW);
+    delay(300);
+
+    if (!smsSent)
+    {
+      Serial.println("SMS Sent Successfully");
+      smsSent = true;
+    }
+
+    Serial.println("ALERT: Garbage Bin is FULL!");
+  }
+  else
+  {
+    digitalWrite(LED_PIN, LOW);
+    digitalWrite(BUZZER_PIN, LOW);
+    smsSent = false;
+    Serial.println("Garbage Level Normal");
+  }
+
+  Serial.println("----------------------------");
+  delay(3000);
+}
